@@ -1,9 +1,12 @@
 #!/bin/bash
 
-TARGET=$1
+INPUT_FILE="../targets.txt"
 OUTPUT_DIR="scans/nmap"
 mkdir -p "$OUTPUT_DIR"
 
-echo "[+] Scanning $TARGET with Nmap..."
-nmap -sV -T4 -oN "$OUTPUT_DIR/$TARGET.txt" "$TARGET"
+while read -r TARGET; do
+    [[ -z "$TARGET" || "$TARGET" =~ ^# ]] && continue
+    echo "[+] Scanning $TARGET with Nmap..."
+    nmap -sV -T4 -oN "$OUTPUT_DIR/$TARGET.txt" "$TARGET"
+done < "$INPUT_FILE"
 
